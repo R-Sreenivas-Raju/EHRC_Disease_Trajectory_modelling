@@ -16,9 +16,8 @@ The notebook explores:
 ```
 .
 ├── delphi_mental_health_trajectories.ipynb   # Main analysis notebook
-├── results/
-│   └── enforcer_outputs/                    # Processed signal outputs
-├── data/                                    # Input datasets
+├── results/                                  # Plots and Results
+├── data/                                     # Input datasets
 ├── requirements.txt    
 └── README.md
 ```
