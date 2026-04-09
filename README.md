@@ -1,20 +1,15 @@
 # Delphi: Mental Health Trajectories Analysis
 
 ## Overview
-This project analyzes mental health trajectories using time-series data and predictive modeling. It processes longitudinal signals, identifies anomalies, and evaluates how signal attenuation impacts anomaly detection.
+Delphi-2M is a GPT-2-based transformer trained on 400K patient health trajectories from the UK Biobank. It models sequences of ICD-10 coded diagnoses over a patient's lifetime, alongside demographic and lifestyle factors, to forecast future disease events and simulate complete health trajectories across more than 1,000 conditions.
 
-The notebook explores:
-- Signal visualization
-- Statistical analysis of time-series data
-- Anomaly detection behavior
-- Effects of enforcement/attenuation on signals
+This notebook applies Delphi-2M specifically to mental health (ICD-10 Chapter V), conditioning on each patient's history up to age 60 and generating synthetic future trajectories up to age 80. It produces a suite of visualisations to explore the timing, frequency, and co-occurrence of mental health conditions in the generated population
 
 ---
 
 ## Project Structure
 
 ```
-.
 ├── delphi_mental_health_trajectories.ipynb   # Main analysis notebook
 ├── results/                                  # Plots and Results
 ├── data/                                     # Input datasets
@@ -38,60 +33,40 @@ It is recommended to use a virtual environment.
 ```bash
 pip install -r requirements.txt
 ```
+---
 
-If `requirements.txt` is not available, install manually:
-```bash
-pip install numpy pandas matplotlib seaborn jupyter
-```
+## Key Parameters
+
+| Parameter | Default | Description |
+| :--- | :--- | :--- |
+| `age` | `60` | **Conditioning age** — history up to this age is used as the input prompt. |
+| `N_PATIENTS` | `500` | Number of patients to generate synthetic trajectories for. |
+| `MAX_TOKENS` | `50` | Maximum number of new disease events to generate per patient. |
+| `max_age` | `80 × 365.25` | Maximum age (in days) for the generated trajectory. |
+| `no_repeat` | `True` | Prevents the exact same disease token from appearing twice in a patient's future timeline. |
 
 ---
 
-## Key Features
+## Model Details
 
-### 1. Signal Analysis
-- Visualizes multiple input signals over time
-- Computes:
-  - Minimum and maximum values
-  - Trends and variability
-
-### 2. Enforcement Analysis
-- Compares:
-  - Original signals
-  - Attenuated (enforced) signals
-- Shows how signals are modified after anomaly thresholds
-
-### 3. Anomaly Behavior
-- Evaluates:
-  - When anomalies occur
-  - Whether attenuation prevents them
+| Property | Specification |
+| :--- | :--- |
+| **Architecture** | Modified GPT-2 (nanoGPT base) |
+| **Parameters** | ~2.24M |
+| **Layers / Heads** | 12 / 12 |
+| **Vocabulary** | 1,270 tokens (ICD-10 diagnoses, sex, BMI, lifestyle, death) |
+| **Training Data** | UK Biobank (~400K patients) |
+| **Validation** | Danish national registries (~1.9M individuals) |
+| **Input Format** | Sequences of `(age_in_days, token)` pairs |
+| **Output** | Predicted `(age, token)` pairs for future health events |
 
 ---
 
 ## Outputs
+All plots are saved to the results/ directory.
+A summary is printed at the end of the notebook, including:
 
-- Time-series plots for all signals
-- Statistical summaries (min, max, distributions)
-- Post-enforcement signal comparisons
-- Anomaly prevention metrics
-
----
-
-## Customization
-
-You can modify:
-- Number of signals analyzed
-- Thresholds for anomaly detection
-- Enforcement/attenuation rules
-- Visualization styles
-
----
-
-## Future Improvements
-
-- Add synthetic data generation
-- Integrate real-time anomaly detection
-- Improve model evaluation metrics (Precision, Recall, F1)
-- Deploy as a dashboard (Streamlit / Flask)
-
-## 👤 Author
-Kantheti Anish
+- Total patients generated
+- Total events and mental health event count
+- Number of unique MH conditions observed
+- List of saved plot filenames
