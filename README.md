@@ -11,7 +11,7 @@ This notebook applies Delphi-2M specifically to mental health (ICD-10 Chapter V)
 
 ```
 ├── delphi_mental_health_trajectories.ipynb   # Main analysis notebook
-├── delphi_simulations.ipynb   # Delphi Simulation notebook
+├── delphi_simulations.ipynb                  # Delphi Simulation notebook
 ├── results/                                  # Plots and Results
 ├── data/                                     # Input datasets
 ├── requirements.txt    
